@@ -2,6 +2,7 @@ import { model, Schema } from "mongoose";
 
 interface User {
   username: object;
+  type: any;
   password: string | object;
 }
 
@@ -10,6 +11,11 @@ const userSchema: Schema = new Schema<User>({
     type: String,
     required: [true, "Please provide a username"],
     unique: [true, "Username already taken"],
+  },
+  type: {
+    type: String,
+    enum: ["Admin", "Regular"],
+    default: "Regular",
   },
   password: {
     type: String,

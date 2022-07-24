@@ -16,7 +16,7 @@ router.get(
 );
 
 router.post("/signup", (req: any, res: Response, next: NextFunction) => {
-  const { username, password } = req.body;
+  const { username, type, password } = req.body;
 
   if (!username) {
     return res
@@ -41,6 +41,7 @@ router.post("/signup", (req: any, res: Response, next: NextFunction) => {
       .then((hashedPassword: any) => {
         return User.create({
           username,
+          type,
           password: hashedPassword,
         });
       })

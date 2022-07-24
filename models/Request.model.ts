@@ -18,4 +18,4 @@ const requestSchema = new Schema<Request>({
 
 const Request = model<Request>("Request", requestSchema);
 
-export default Request;
+module.exports = Request;
