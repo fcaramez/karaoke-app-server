@@ -2,7 +2,7 @@ import { model, Schema } from "mongoose";
 
 interface User {
   username: object;
-  password: object;
+  password: string | object;
 }
 
 const userSchema: Schema = new Schema<User>({
@@ -13,10 +13,10 @@ const userSchema: Schema = new Schema<User>({
   },
   password: {
     type: String,
-    required: [true, "Please input a password"],
+    required: true,
   },
 });
 
 const User = model<User>("User", userSchema);
 
-export default User;
+module.exports = User;

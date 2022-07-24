@@ -2,9 +2,9 @@ const router = require("express").Router();
 import bcrypt from "bcrypt";
 import mongoose from "mongoose";
 const saltRounds: number = 10;
-import User from "../models/User.model";
+const User = require("../models/User.model");
 import jwt from "jsonwebtoken";
-import isAuthenticated from "../middleware/jwt.middleware";
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 import { Request, Response, NextFunction } from "express";
 
 router.get(
@@ -34,34 +34,32 @@ router.post("/signup", (req: any, res: Response, next: NextFunction) => {
     if (found) {
       return res.status(400).json({ errorMessage: "Username already taken!" });
     }
-  });
 
-  return bcrypt
-    .genSalt(saltRounds)
-    .then((salt: any) => {
-      bcrypt.hash(password, salt);
-    })
-    .then((hashedPassword: string) => {
-      return User.create({
-        username,
-        password: hashedPassword,
-      });
-    })
-    .then((user: mongoose.Document) => {
-      req.session.user = user;
-      res.status(201).json(user);
-    })
-    .catch((error: any) => {
-      if (error instanceof mongoose.Error.ValidationError) {
-        return res.status(400).json({ errorMessage: error.message });
-      }
-      if (error.code === 11000) {
-        return res.status(400).json({
-          errorMessage: "Username already taken",
+    return bcrypt
+      .genSalt(saltRounds)
+      .then((salt: any) => bcrypt.hash(password, salt))
+      .then((hashedPassword: any) => {
+        return User.create({
+          username,
+          password: hashedPassword,
         });
-      }
-      return res.status(500).json({ errorMessage: error.message });
-    });
+      })
+      .then((user: any) => {
+        req.session.user = user;
+        res.status(201).json(user);
+      })
+      .catch((error: any) => {
+        if (error instanceof mongoose.Error.ValidationError) {
+          return res.status(400).json({ errorMessage: error.message });
+        }
+        if (error.code === 11000) {
+          return res.status(400).json({
+            errorMessage: "Username already taken",
+          });
+        }
+        return res.status(500).json({ errorMessage: error.message });
+      });
+  });
 });
 
 router.post("/login", (req: Request, res: Response, next: NextFunction) => {
@@ -107,4 +105,4 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
     });
 });
 
-export default router;
+module.exports = router;

@@ -2,7 +2,7 @@
 require("dotenv/config");
 require("./db");
 import express from "express";
-import allRoutes from "./routes/index.routes";
+const allRoutes = require("./routes/index.routes")
 
 const app: any = express();
 require("./config")(app);
