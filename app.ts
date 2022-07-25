@@ -9,4 +9,5 @@ require("./config")(app);
 app.use("/", allRoutes);
 
 require("./error-handling")(app);
+
 module.exports = app;
