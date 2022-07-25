@@ -79,7 +79,7 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
   }
 
   User.findOne({ username })
-    .then((user) => {
+    .then((user: any) => {
       if (!user) {
         res.status(400).json({ errorMessage: "Wrong Credentials" });
       }
@@ -89,9 +89,9 @@ router.post("/login", (req: Request, res: Response, next: NextFunction) => {
           return res.status(400).json({ errorMessage: "Wrong password!" });
         }
 
-        const { _id, username } = user;
+        const { _id, username, type } = user;
 
-        const payload = { _id, username };
+        const payload = { _id, username, type };
 
         const authToken = jwt.sign(payload, process.env.TOKEN_SECRET, {
           algorithm: "HS256",

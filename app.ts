@@ -1,4 +1,3 @@
-
 require("dotenv/config");
 require("./db");
 import express from "express";
@@ -10,4 +9,4 @@ require("./config")(app);
 app.use("/", allRoutes);
 
 require("./error-handling")(app);
-export default app;
+module.exports = app;

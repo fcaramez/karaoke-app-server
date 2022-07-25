@@ -6,14 +6,15 @@ router.post("/request", (req: any, res: any, next: any) => {
   const { song, singers } = req.body;
 
   if (!song || !singers) {
-    res.status(400).json({ errorMessage: "Please submit both fields!" });
+    return res.status(400).json({ errorMessage: "Please submit both fields!" });
   }
+
   Request.create({ song, singers })
     .then((request: any) => {
-      res.status(200).json(request);
+      return res.status(200).json(request);
     })
     .catch((error: any) => {
-      res.status(400).json({ errorMessage: error.message });
+      return res.status(400).json({ errorMessage: error.message });
     });
 });
 
